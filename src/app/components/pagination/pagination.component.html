@@ -1,0 +1,9 @@
+<div class="form-group">
+  <div class="group">
+    <p>Página</p>
+    <select id="pagina" class="form-control" (change)="handlePage($event.target.value)">
+      <option *ngFor="let item of pageNumbers"  value="{{ item }}">{{ item }}</option>
+    </select>
+    <p>de {{totalPages}}</p>
+  </div>
+</div>

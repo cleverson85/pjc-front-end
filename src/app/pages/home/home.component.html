@@ -1,0 +1,43 @@
+<div class="container-fluid">
+  <div class="cad">
+    <h1>Artistas</h1>
+    <a class="btn btn-primary" role="button" routerLink="/artista/artista-edit">Cadastrar</a>
+  </div>
+  <div *ngIf="artistas.length > 0">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Nome Álbuns</th>
+          <th></th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor='let item of artistas'>
+          <td>
+            <span>#{{ item.id }}</span>
+          </td>
+          <td>
+            <span>{{ item.nome }}</span>
+          </td>
+          <td>
+            <span>{{ getAlbuns(item) }}</span>
+          </td>
+          <td>
+            <span>
+              <!-- <ngx-avatar src="{{ order.deliveryMan.avatar.url }}" name="{{ order.deliveryMan.name }}" size="30" [round]="true"></ngx-avatar> -->
+            </span>
+          </td>
+          <td>
+            <app-menu-list [route]="'artista/artista-edit/' + item.id"></app-menu-list>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="footer">
+       <app-pagination [list]="artistas" (pageChange)="onPageChange($event)"></app-pagination>
+    </div>
+  </div>
+</div>

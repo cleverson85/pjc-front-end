@@ -1,0 +1,61 @@
+<div class="container-fluid">
+  <div class="cad">
+    <h1>Cadastrar Artista</h1>
+    <div>
+      <button type="button" class="btn btn-danger" routerLink="">
+        Cancelar
+      </button>
+      <button type="sumit" class="btn btn-primary" (click)="save()">
+        Salvar
+      </button>
+    </div>
+  </div>
+  <form [formGroup]="formGroup" class="needs-validation" novalidate>
+    <div class="card" style="width: 50%;">
+      <div class="card-body">
+        <div class="form-group">
+          <label for="artista">Nome Artista</label>
+          <input
+            type="text"
+            id="artista"
+            name="artista"
+            class="form-control"
+            formControlName="artista"
+            [ngClass]="{ 'is-invalid': submitted && hasError('artista') }"
+          />
+          <div class="invalid-feedback" *ngIf="hasError('artista') && hasError('artista')['required']">
+            Por favor, informe o nome do artista.
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="album">Nome Álbuns</label>
+          <input
+            type="text"
+            id="album"
+            name="album"
+            class="form-control"
+            formControlName="album"
+            [ngClass]="{ 'is-invalid': submitted && hasError('album') }" />
+          <div class="invalid-feedback" *ngIf="hasError('album') && hasError('album')['required']">
+            Por favor, informe o nome do álbum.
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="custom-file-label" for="arquivo" id="customFileLabel">Selecionar Imagens Álbum</label>
+          <div class="custom-file">
+            <input
+              type="file"
+              class="custom-file-input"
+              id="arquivo"
+              name="arquivo"
+              (change)="onChange($event.target.files)"
+              accept=".jpeg, .jpg, .png"
+              multiple
+              formControlName="arquivo" />
+          </div>
+          <label class="custom-file-label" for="arquivo" id="selectedFiles" style="color: brown"></label>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
