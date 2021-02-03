@@ -1,21 +1,33 @@
 <div class="container-fluid">
   <div class="cad">
     <h1>Artistas</h1>
-    <a class="btn btn-primary" role="button" routerLink="/artista/artista-edit">Cadastrar</a>
   </div>
-  <div *ngIf="artistas.length > 0">
+  <div class="d-flex justify-content-center">
+    <div class="input-group w-75">
+      <input type="text" class="form-control" placeholder="{{ placeholder }}" aria-describedby="button-addon4" #consulta>
+      <div class="input-group-append" id="button-addon4">
+        <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Consultar por</button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="#" (click)="changePlaceholder('Artista', 'A')">Artista</a>
+          <a class="dropdown-item" href="#" (click)="changePlaceholder('Álbum', 'B')">Álbum</a>
+        </div>
+        <a class="btn btn-success" role="button" (click)="consultar(consulta.value)">Consultar</a>
+        <a class="btn btn-primary" role="button" routerLink="/artista/artista-edit">Cadastrar</a>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="list.length > 0">
     <table>
       <thead>
         <tr>
           <th>ID</th>
           <th>Nome</th>
           <th>Nome Álbuns</th>
-          <th></th>
-
+          <th>Imagem Álbuns</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor='let item of artistas'>
+        <tr *ngFor='let item of list'>
           <td>
             <span>#{{ item.id }}</span>
           </td>
@@ -27,11 +39,12 @@
           </td>
           <td>
             <span>
-              <!-- <ngx-avatar src="{{ order.deliveryMan.avatar.url }}" name="{{ order.deliveryMan.name }}" size="30" [round]="true"></ngx-avatar> -->
+                <ngx-avatar [src]="getSrc(imagem)" size="30" value="28%" [round]="true" [name]="imagem.nome"
+                  *ngFor="let imagem of item.imagens?.slice(0, 5); let i=index"></ngx-avatar>
             </span>
           </td>
           <td>
-            <app-menu-list [route]="'artista/artista-edit/' + item.id"></app-menu-list>
+            <app-menu-list [route]="'artista/artista-edit/' + item.id" [delete]="item" (artistas)="onRefresh($event)" (detalhe)="detalhes(item)" ></app-menu-list>
           </td>
         </tr>
       </tbody>

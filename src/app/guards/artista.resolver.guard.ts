@@ -18,14 +18,14 @@ export class ArtistaResolverGuard implements Resolve<Artista> {
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Artista> {
 
     if (route.params && route.params['id']) {
-      console.log('ArtistaResolverGuard');
       return this.artistaService.getById(`${RoutesApi.Artista}/${route.params['id']}`);
     }
 
     return of({
       id: null,
       nome: null,
-      albuns: null
+      albuns: null,
+      imagens: null
     });
   }
 

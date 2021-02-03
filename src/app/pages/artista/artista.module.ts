@@ -1,20 +1,21 @@
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-
-import { ArtistaRoutingModule } from './artista-routing.module';
 
 import { ArtistaComponent } from './artista.component';
 
+import { ArtistaRoutingModule } from './artista-routing.module';
+import { SharedModule } from 'src/app/shared/shared.module';
+
 @NgModule({
+  declarations: [
+    ArtistaComponent,
+  ],
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule,
-    ArtistaRoutingModule
+    ArtistaRoutingModule,
+    SharedModule
   ],
-  declarations: [
-    ArtistaComponent
-  ]
 })
 export class ArtistaModule { }

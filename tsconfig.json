@@ -19,5 +19,11 @@
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
     "strictInjectionParameters": true
-  }
+  },
+  "include": ["src"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    ".docker"
+  ]
 }

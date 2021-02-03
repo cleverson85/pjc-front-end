@@ -1,8 +1,8 @@
 <div class="container-fluid">
   <div class="cad">
-    <h1>Cadastrar Artista</h1>
+    <h1>{{ titulo }}</h1>
     <div>
-      <button type="button" class="btn btn-danger" routerLink="">
+      <button type="button" class="btn btn-danger" routerLink="/home">
         Cancelar
       </button>
       <button type="sumit" class="btn btn-primary" (click)="save()">
@@ -10,7 +10,7 @@
       </button>
     </div>
   </div>
-  <form [formGroup]="formGroup" class="needs-validation" novalidate>
+  <form [formGroup]="formGroup" class="needs-validation" novalidate enctype="multipart/form-data">
     <div class="card" style="width: 50%;">
       <div class="card-body">
         <div class="form-group">
@@ -28,7 +28,7 @@
           </div>
         </div>
         <div class="form-group">
-          <label for="album">Nome Álbuns</label>
+          <label for="album">Nome Álbuns</label><p>( separados por vírgula )</p>
           <input
             type="text"
             id="album"
@@ -41,19 +41,23 @@
           </div>
         </div>
         <div class="form-group">
-          <label class="custom-file-label" for="arquivo" id="customFileLabel">Selecionar Imagens Álbum</label>
+          <label class="custom-file-label" for="file" id="customFileLabel">Selecionar Imagens Álbum</label>
           <div class="custom-file">
             <input
               type="file"
               class="custom-file-input"
-              id="arquivo"
-              name="arquivo"
+              name="files"
               (change)="onChange($event.target.files)"
               accept=".jpeg, .jpg, .png"
-              multiple
-              formControlName="arquivo" />
+              multiple />
           </div>
-          <label class="custom-file-label" for="arquivo" id="selectedFiles" style="color: brown"></label>
+
+          <mat-list *ngFor="let item of fileNames; let i = index;">
+            <mat-list-item>
+              <h4 mat-line>{{ item.nome }}</h4>
+              <mat-icon style="cursor: pointer; color: rgb(223, 29, 29);" (click)="removeFromList(i)" >clear</mat-icon>
+            </mat-list-item>
+          </mat-list>
         </div>
       </div>
     </div>

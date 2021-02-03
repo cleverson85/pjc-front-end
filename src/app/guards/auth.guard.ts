@@ -26,15 +26,11 @@ export class AuthGuard implements CanActivate, CanLoad {
     return this.verificarAcesso();
   }
 
-  private verificarAcesso() {
-    // console.log('autenticado ' + this.authService.usuarioAutenticado())
-
+  private verificarAcesso(): boolean {
     if (this.authService.usuarioAutenticado()){
-      return true;
+      this.router.navigate(['']);
     }
 
-    this.router.navigate(['/login']);
-
-    return false;
+    return true;
   }
 }

@@ -2,28 +2,27 @@ import { Router } from '@angular/router';
 import { Usuario } from 'src/app/models/usuario';
 import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-
 import { environment } from '../../environments/environment';
-import { HandleErrorService } from './handleError.service';
+import { interval, Subscription, timer, Observable } from 'rxjs';
+
 import { ToasterService } from './common/toaster.service';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private autenticado = false;
-  private JwtToken: string
   private readonly API = environment.API;
 
-  mostrarMenuEmitter = new EventEmitter<boolean>()
+  mostrarMenuEmitter = new EventEmitter<boolean>();
+  tokenHelper = new JwtHelperService();
 
   get token () {
-    return this.JwtToken;
+    return localStorage.getItem('token')
   }
 
   constructor(private httpClient: HttpClient,
-              private handleErrorService: HandleErrorService,
               private router: Router,
               private toaster: ToasterService) { }
 
@@ -33,15 +32,10 @@ export class AuthService {
     })
   };
 
-  logar(usuario: Usuario): void {
+  login(usuario: Usuario) {
     this.httpClient.post(`${this.API}session`, JSON.stringify(usuario), this.httpOptions)
-      .subscribe((res: any) => {
-        this.autenticado = res.autenticado;
-        this.mostrarMenuEmitter.emit(this.autenticado);
-
-        const { token } = res;
-        this.JwtToken = token;
-        this.router.navigate(['/']);
+      .subscribe((result: any) => {
+        this.configurarSessao(result);
       },
       (e: HttpErrorResponse) => {
         const { error } = e;
@@ -49,8 +43,57 @@ export class AuthService {
       });
   }
 
-  usuarioAutenticado(): boolean {
-    this.mostrarMenuEmitter.emit(this.autenticado);
-    return this.autenticado;
+  logOut() {
+    const { email } = this.tokenHelper.decodeToken(localStorage.getItem('token'));
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('token');
+
+    this.mostrarMenuEmitter.emit(false);
+
+    this.router.navigate(['']);
+  }
+
+
+  configurarSessao(result: any) {
+    const { token, autenticado, refreshToken } = result;
+
+    if (autenticado) {
+      localStorage.setItem('refreshToken', refreshToken);
+      localStorage.setItem('token', token);
+
+      this.refreshToken();
+
+      this.router.navigate(['/home']);
+    } else {
+      this.mostrarMenuEmitter.emit(false);
+      this.router.navigate(['']);
+    }
+  }
+
+  usuarioAutenticado() {
+    this.refreshToken();
+
+    const isExpired = this.tokenHelper.isTokenExpired(localStorage.getItem('token'));
+    this.mostrarMenuEmitter.emit(!isExpired);
+
+    return isExpired;
+  }
+
+  refreshToken() {
+    const timerValue = timer(0, 3000 * 60);
+    timerValue.subscribe(() => { this.postRefreshToken(); });
+  }
+
+  postRefreshToken() {
+    const refreshToken = localStorage.getItem('refreshToken');
+    const { email } = this.tokenHelper.decodeToken(localStorage.getItem('token'));
+
+    this.httpClient.post(`${this.API}token`, JSON.stringify({ email, refreshToken }), this.httpOptions)
+                          .subscribe((result: any) => {
+                            const { token } = result;
+                            localStorage.setItem('token', token);
+
+                            console.log('refreshToken');
+                          });
   }
 }

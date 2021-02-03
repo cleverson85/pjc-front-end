@@ -1,21 +1,21 @@
 import { NgModule } from '@angular/core';
 
-import { MenuListComponent } from './menu-list.component';
+import { ConfirmModalComponent } from './confirm-modal.component';
 
 import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   declarations: [
-    MenuListComponent
+    ConfirmModalComponent
   ],
   imports: [
     SharedModule
   ],
   exports: [
-    MenuListComponent
+    ConfirmModalComponent
   ],
   bootstrap: [
-    MenuListComponent
-  ],
+    ConfirmModalComponent
+  ]
 })
-export class MenuListModule { }
+export class ConfirmModalModule { }

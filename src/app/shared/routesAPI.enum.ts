@@ -1,4 +1,5 @@
 export enum RoutesApi {
   Artista = 'artista',
-  Arquivos = 'files'
+  Arquivos = 'files',
+  DeletarArquivos = 'deletefiles'
 }

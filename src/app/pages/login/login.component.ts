@@ -23,11 +23,11 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  login(): void {
+  login() {
     this.submitted = true;
 
     if (this.formGroup.valid) {
-      this.authService.logar(this.formGroup.value);
+      this.authService.login(this.formGroup.value);
     }
   }
 
