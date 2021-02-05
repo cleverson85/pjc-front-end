@@ -92,8 +92,6 @@ export class AuthService {
                           .subscribe((result: any) => {
                             const { token } = result;
                             localStorage.setItem('token', token);
-
-                            console.log('refreshToken');
                           });
   }
 }

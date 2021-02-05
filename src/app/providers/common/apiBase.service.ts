@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { retry, catchError, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
@@ -60,8 +60,6 @@ class ApiBase {
     arquivos.forEach(file => formData.append('files', file, file.name));
     formData.append('id', String(id));
     formData.append('artista', artista);
-
-    debugger;
 
     return this.httpClient.post(this.API + RoutesApi.Arquivos, formData)
       .pipe(

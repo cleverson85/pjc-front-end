@@ -8,7 +8,7 @@ import { PageService } from 'src/app/providers/page.service';
   styleUrls: ['./pagination.component.css']
 })
 export class PaginationComponent implements OnInit {
-  @Input() list: any[] = [];
+  @Input() total: number;
   @Output() pageChange = new EventEmitter();
 
   public pageNumbers: number[] = [];
@@ -23,17 +23,13 @@ export class PaginationComponent implements OnInit {
   }
 
   startPage() {
-    const obj = this.pageService.handlePages(this.list)
+    const obj = this.pageService.handlePages(this.total)
     const { pageNumber, totalPages } = obj;
     this.pageNumbers = pageNumber;
     this.totalPages = totalPages;
   }
 
   handlePage(page: number) {
-    this.currentPage = page;
-    const indexLast = this.currentPage * this.itensPerPage;
-    const indexFirst = indexLast - this.itensPerPage;
-    const newList = this.list?.slice(indexFirst, indexLast);
-    this.pageChange.emit(newList);
+    this.pageChange.emit(page);
   }
 }

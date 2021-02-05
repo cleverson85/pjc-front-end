@@ -5,17 +5,16 @@ import { Injectable } from '@angular/core';
 })
 export class PageService {
 
-  pageNumbers: any = [];
-
   constructor() { }
 
-  handlePages(list: any): any {
-    this.pageNumbers = [];
-    const totalPages = Math.ceil(list.length / 10);
+  handlePages(total: number): any {
+    let pageNumbers = [];
+
+    const totalPages = Math.ceil(total / 10);
     for (let i = 1; i <= totalPages; i++) {
-      this.pageNumbers.push(i);
+      pageNumbers.push(i);
     }
 
-    return { pageNumber: this.pageNumbers, totalPages: totalPages };
+    return { pageNumber: pageNumbers, totalPages: totalPages };
   }
 }

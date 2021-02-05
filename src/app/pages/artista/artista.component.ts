@@ -1,5 +1,4 @@
-import { map } from 'rxjs/operators';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
@@ -65,6 +64,9 @@ export class ArtistaComponent implements OnInit, OnDestroy {
 
           this.deleteFiles();
           this.uploadFiles(message, id);
+
+          this.toaster.showToastSuccess(message);
+          this.location.back();
         },
         (e: HttpErrorResponse) => {
           const { error } = e;
@@ -76,27 +78,21 @@ export class ArtistaComponent implements OnInit, OnDestroy {
 
   uploadFiles(message: string, id: number) {
     if (this.files.length > 0) {
-      id = this.artista ? this.artista.id : id;
+      id = this.artista.id != null ? this.artista.id : id;
 
       this.artistaService.upload(this.files, id, this.formGroup.get('artista').value)
-      .subscribe((result: any) => {
-        this.toaster.showToastSuccess(message);
-        this.location.back();
-      },
-      e => {
-        this.toaster.showToastError(e.message);
-      })
+        .subscribe((result: any) => {
+        },
+        e => {
+          this.toaster.showToastError(e.message);
+        })
     }
   }
 
   deleteFiles() {
     if (this.deletedFiles.length > 0) {
       this.artistaService.deleteFiles(this.deletedFiles)
-        .subscribe((result) => {
-          if (this.files.length == 0) {
-            this.location.back();
-          }
-        });
+        .subscribe((result) => { });
     }
   }
 

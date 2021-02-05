@@ -39,8 +39,8 @@ export class MenuListComponent implements OnInit {
         if (result) {
           this.artistaService.delete<Artista>(this.delete.id, RoutesApi.Artista)
             .subscribe((result: any) => {
-              const { message, artistas } = result;
-              this.artistas.emit(artistas);
+              const { message } = result;
+              this.artistas.emit();
 
               this.toaster.showToastSuccess(message);
             },

@@ -23,8 +23,11 @@ export class ModalService {
   }
 
   showModal(data: any) : Observable<any> {
-    debugger;
     const dialogRef = this.dialog.open(ModalComponent);
+    const componentInstance = dialogRef.componentInstance;
+
+    componentInstance.artista = data;
+
     return dialogRef.afterClosed();
   }
 }
